@@ -5,7 +5,8 @@ let contractWithSigner;
 main();
 
 async function main() {
-    console.log
+    console.log("is this working?");
+
     // basic setup code required for all the web pages we make that interact with MetaMask and the Ethereum blockchain
     const provider = new ethers.providers.Web3Provider(window.ethereum, "any");
     await provider.send("eth_requestAccounts", []);
@@ -14,4 +15,21 @@ async function main() {
     contractWithSigner = contract.connect(signer);
 
     /////// ADD YOUR CODE BELOW THIS LINE ///////
+    
+    const myAddress = await signer.getAddress();
+    console.log(myAddress);
+
+    //mint an NFT when the user hits "mint" button
+    mintButton.addEventListener("click", function(){
+        contractWithSigner.safeMint(myAddress)
+    })
+
+    //Add an event listener that listens to the contract event
+    contract.on("MintEvent", (tokenURI, tokenID) => {
+        console.log(tokenURI);
+        console.log(tokenID);
+
+
+    })
 }
+
